@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Albumok</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background-color: lightblue; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 3px solid black; padding: 8px; text-align: center; background-color: lightblue; }
+    th { background-color: coral; }
+    td:hover { background-color: yellow; }
+    button { width: 80px; }
+    #hozz:hover { font-weight: bold; background-color: green; }
+    #tor:hover { font-weight: bold; background-color: red; }
+    #mod:hover { font-weight: bold; background-color: orange; }
+    input, select, button { margin: 5px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Albumok</h1>
+
+  <div>
+    <input type="text" id="zenekar" placeholder="Zenekar">
+    <input type="text" id="albumCim" placeholder="Album címe">
+    <input type="number" id="ev" placeholder="Kiadás éve" min="1900" max="2050">
+    <input type="text" id="stilus" placeholder="Műfaj">
+    <button onclick="hozzaadAlbum()" id="hozz">Hozzáadás</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Zenekar</th>
+        <th>Album címe</th>
+        <th>Kiadás éve</th>
+        <th>Műfaj</th>
+        <th>Művelet</th>
+      </tr>
+    </thead>
+    <tbody id="albumok-tbody"></tbody>
+  </table>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/albums';
+
+    async function lekerAlbumok() {
+      const res = await fetch(apiUrl);
+      const adatok = await res.json();
+      megjelenitAlbumok(adatok);
+    }
+
+    function megjelenitAlbumok(lista) {
+      const tbody = document.getElementById('albumok-tbody');
+      tbody.innerHTML = '';
+      lista.forEach(album => {
+        const sor = document.createElement('tr');
+        sor.innerHTML = `
+          <td>${album.zenekar}</td>
+          <td>${album.albumCim}</td>
+          <td>${album.evszam}</td>
+          <td>${album.mufaj}</td>
+          <td>
+            <button onclick="modositAlbum('${album.zenekar}', '${album.albumCim}', '${album.evszam}', '${album.mufaj}')" id="mod">Módosítás</button>
+            <button onclick="torolAlbum('${album.zenekar}', '${album.albumCim}')" id="tor">Törlés</button>
+            </td>
+        `;
+        tbody.appendChild(sor);
+      });
+    }
+
+    async function hozzaadAlbum() {
+      const zenekar = document.getElementById('zenekar').value;
+      const albumCim = document.getElementById('albumCim').value;
+      const ev = parseInt(document.getElementById('ev').value);
+      const stilus = document.getElementById('stilus').value;
+
+      if (!zenekar || !albumCim || !ev || !stilus) return alert('Minden mezőt ki kell tölteni!');
+
+      await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          zenekar,
+          albumCim,
+          evszam: ev,    // javítva: evszam
+          mufaj: stilus  // javítva: mufaj
+        })
+      });
+
+      lekerAlbumok();
+    }
+
+    async function torolAlbum(zenekar, albumCim) {
+      await fetch(apiUrl, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zenekar, albumCim })
+      });
+
+      lekerAlbumok();
+    }
+
+    async function modositAlbum(regiZenekar, regiAlbumCim, regiEvszam, regiMufaj) {
+      const ujZenekar = prompt("Új zenekar neve:", regiZenekar);
+      const ujAlbumCim = prompt("Új album címe:", regiAlbumCim);
+      const ujEvszam = prompt("Új évszám:", regiEvszam);
+      const ujMufaj = prompt("Új műfaj:", regiMufaj);
+
+      if (!ujZenekar || !ujAlbumCim || !ujEvszam || !ujMufaj) {
+        alert('Minden mezőt ki kell tölteni!');
+        return;
+      }
+
+      await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          regiZenekar,
+          regiAlbumCim,
+          ujZenekar,
+          ujAlbumCim,
+          evszam: ujEvszam,
+          mufaj: ujMufaj
+        })
+      });
+
+      lekerAlbumok();
+    }
+
+    lekerAlbumok();
+  </script>
+</body>
+</html>

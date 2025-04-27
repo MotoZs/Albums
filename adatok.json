@@ -1,0 +1,58 @@
+{
+  "albums": [
+    {
+      "zenekar": "Skillet",
+      "albumCim": "Rise",
+      "evszam": "2020",
+      "mufaj": "Hard Rock"
+    },
+    {
+      "zenekar": "Queen",
+      "albumCim": "A Night at the Opera",
+      "evszam": 1975,
+      "mufaj": "Rock"
+    },
+    {
+      "zenekar": "Metallica",
+      "albumCim": "Master of Puppets",
+      "evszam": 1986,
+      "mufaj": "Heavy Metal"
+    },
+    {
+      "zenekar": "Pink Floyd",
+      "albumCim": "The Dark Side of the Moon",
+      "evszam": 1973,
+      "mufaj": "Progresszív Rock"
+    },
+    {
+      "zenekar": "The Beatles",
+      "albumCim": "Abbey Road",
+      "evszam": 1969,
+      "mufaj": "Rock"
+    },
+    {
+      "zenekar": "Nirvana",
+      "albumCim": "Nevermind",
+      "evszam": 1991,
+      "mufaj": "Grunge"
+    },
+    {
+      "zenekar": "Linkin Park",
+      "albumCim": "Hybrid Theory",
+      "evszam": 2000,
+      "mufaj": "Nu Metal"
+    },
+    {
+      "zenekar": "AC/DC",
+      "albumCim": "Back in Black",
+      "evszam": 1980,
+      "mufaj": "Hard Rock"
+    },
+    {
+      "zenekar": "Coldplay",
+      "albumCim": "Parachutes",
+      "evszam": 2000,
+      "mufaj": "Alternative Rock"
+    }
+  ]
+}
